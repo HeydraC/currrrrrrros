@@ -14,6 +14,7 @@ verify _ [] = True
 verify (o1,(i1,j1),l1) ((o2,(i2,j2),l2) : xs)
   | null [x | x<-positions (o1,(i1,j1),l1), elem x (positions (o2,(i2,j2),l2))] = verify (o1,(i1,j1),l1) xs
   | otherwise = False
+-- Por cada posicion del primer vehículo se comprueba si coincide con alguna del segundo vehículo
 
 -- Pregunta 1
 initialBoard :: [Vehicle] -> Board
