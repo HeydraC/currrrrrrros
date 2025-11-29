@@ -11,10 +11,10 @@ positions (o,(i,j),l)
 
 verify::Vehicle->Board->Bool
 verify _ [] = True
-verify (o1,(i1,j1),l1) ((o2,(i2,j2),l2) : xs)
-  | null [x | x<-positions (o1,(i1,j1),l1), elem x (positions (o2,(i2,j2),l2))] = verify (o1,(i1,j1),l1) xs
+verify v (x:xs)
+  | null [y | y<-positions v, elem y (positions x)] = verify v xs
   | otherwise = False
--- Por cada posicion del primer vehículo se comprueba si coincide con alguna del segundo vehículo
+-- Por cada posicion de v se comprueba si coincide con alguna de x
 
 -- Pregunta 1
 initialBoard :: [Vehicle] -> Board
