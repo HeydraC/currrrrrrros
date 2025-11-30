@@ -25,4 +25,23 @@ initialBoard (x:xs)
   | verify x xs = if null (initialBoard xs) then [] else x:xs
   | otherwise = []
 
+--Pregunta 2
+isValidMove :: Board -> Int -> Int -> Bool
+isValidMove b i n= not (null (initialBoard (iteRate b i n)))
+
+iteRate:: [Vehicle] -> Int -> Int -> [Vehicle] 
+iteRate (x:xs) 0 n = (modificar x n):xs
+iteRate (x:xs) i n
+  |i >0 = x:iteRate xs (i-1) n
+  
+modificar :: Vehicle -> Int -> Vehicle
+modificar (o,(i,j),l) n
+  | o == H = (o,(i,j+n),l)
+  | otherwise = (o,(i+n,j),l)
+  
+--Pregunta 3
+moveVehicle :: Board -> Int -> Int -> Board
+moveVehicle b i n = (iteRate b i n)
+
+
 main = putStrLn $ show $ initialBoard [(H, (2,0), 2), (V, (0,2), 3)]
