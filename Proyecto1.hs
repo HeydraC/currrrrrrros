@@ -12,6 +12,7 @@ positions (o,(i,j),l)
 verify::Vehicle->Board->Bool
 verify _ [] = True
 verify v (x:xs)
+  | not (null [(i,j) | (i,j)<-positions v, (i<0 || i>5) || (j<0 || j>5)]) = False
   | null [y | y<-positions v, elem y (positions x)] = verify v xs
   | otherwise = False
 -- Por cada posicion de v se comprueba si coincide con alguna de x
