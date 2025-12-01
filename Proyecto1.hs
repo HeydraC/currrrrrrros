@@ -32,6 +32,12 @@ isValidMove b k n = verify movido (filter(\x -> x /= original) b)
     original = iteRate b k
     movido = move original n
     
+iteRate :: [Vehicle] -> Int -> Vehicle
+iteRate (x:_) 0  = x
+iteRate (_:xs) i 
+  | i > 0     = iteRate xs (i-1) 
+  | otherwise = error "Carro no encontrado"
+  
 move:: Vehicle -> Int -> Vehicle
 move (o, (i, j), l) n
       | o == H    = (o, (i, j + n), l)
