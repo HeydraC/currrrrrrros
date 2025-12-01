@@ -50,6 +50,11 @@ moveVehicle (x:xs) 0 n = (move x n) :xs
 moveVehicle (x:xs) k n = x:moveVehicle xs (k-1) n
 
 --Pregunta 4
+moveVehicle :: Board -> Int -> Int -> Board
+moveVehicle (x:xs) 0 n = (move x n) :xs
+moveVehicle (x:xs) k n = x:moveVehicle xs (k-1) n
+
+--Pregunta 4
 vllc:: Board->Int->Int->Int
 vllc xs k n
   | (isValidMove xs k (n+1)) = vllc xs k (n+1)
@@ -58,4 +63,10 @@ vllc xs k n
 psm ::Board -> Int -> Int -> Int
 psm b k n = if isValidMove b k (n-1) then psm b k (n-1) else n
 
-main = putStrLn $ show $ vllc [(H,(0,1),5)] 0 0
+bismuto ::Board->Int->Int->(Int,Int)
+bismuto xs k l
+  | k >= l = (0,0)
+  | (vllc xs k 0) == 0 = bismuto xs (k+1) l
+  | otherwise = (k,vllc xs k 0)
+
+main = print (bismuto [(H,(0,0),1), (V,(0,1),2)] 0 (length [(H,(0,0),1), (V,(0,1),2)]))
