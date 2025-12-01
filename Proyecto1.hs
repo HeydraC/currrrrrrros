@@ -10,10 +10,10 @@ positions (o,(i,j),l)
   | otherwise = (i,j):positions (o,(i+1, j),l-1)
 
 verify::Vehicle->Board->Bool
-verify _ [] = True
-verify v (x:xs)
+verify v xs
   | not (null [(i,j) | (i,j)<-positions v, (i<0 || i>5) || (j<0 || j>5)]) = False
-  | null [y | y<-positions v, elem y (positions x)] = verify v xs
+  | null xs = True
+  | null [y | y<-positions v, elem y (positions (head xs))] = verify v (tail xs)
   | otherwise = False
 -- Por cada posicion de v se comprueba si coincide con alguna de x
 
@@ -32,20 +32,27 @@ isValidMove b k n = verify movido (filter(\x -> x /= original) b)
     original = iteRate b k
     movido = move original n
     
-iteRate :: [Vehicle] -> Int -> Vehicle
-iteRate (x:_) 0  = x
-iteRate (_:xs) i 
-  | i > 0     = iteRate xs (i-1) 
-  | otherwise = error "Carro no encontrado"
-  
 move:: Vehicle -> Int -> Vehicle
 move (o, (i, j), l) n
       | o == H    = (o, (i, j + n), l)
       | otherwise = (o, (i + n, j), l)
-      
+
+iteRate :: [Vehicle] -> Int -> Vehicle
+iteRate [] _ = (H,(0,0),0)
+iteRate (x:_) 0  = x
+iteRate (_:xs) i 
+  | i > 0     = iteRate xs (i-1)
+  | otherwise = error "Vehiculo no encontrado"
+
 --Pregunta 3
 moveVehicle :: Board -> Int -> Int -> Board
 moveVehicle (x:xs) 0 n = (move x n) :xs
 moveVehicle (x:xs) k n = x:moveVehicle xs (k-1) n
 
-main = putStrLn $ show $ isValidMove [(H, (2,0), 2), (V, (2,3), 3)] 0 1
+--Pregunta 4
+vllc:: Board->Int->Int->Int
+vllc xs k n
+  | (isValidMove xs k (n+1)) = vllc xs k (n+1)
+  | otherwise = n
+
+main = putStrLn $ show $ vllc [(H,(0,1),5)] 0 0
