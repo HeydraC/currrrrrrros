@@ -54,5 +54,7 @@ vllc:: Board->Int->Int->Int
 vllc xs k n
   | (isValidMove xs k (n+1)) = vllc xs k (n+1)
   | otherwise = n
-
+  
+psm ::Board -> Int -> Int -> Int
+psm b k n = if isValidMove b k (n+1) then psm b k (n+1) else k
 main = putStrLn $ show $ vllc [(H,(0,1),5)] 0 0
