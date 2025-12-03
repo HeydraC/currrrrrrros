@@ -1,7 +1,17 @@
+-- Amanda Mendoza 31708119 y Carlos Heydra 31307754
+
 type Coord = (Int, Int)
 data Orientation = H | V deriving(Show, Eq)
 type Vehicle = (Orientation, Coord, Int)
 type Board = [Vehicle]
+
+-- Pregunta 1
+initialBoard :: [Vehicle] -> Board
+initialBoard [] = []
+initialBoard [x] = [x]
+initialBoard (x:xs)
+  | verify x xs = if null (initialBoard xs) then [] else x:xs
+  | otherwise = []
 
 positions::Vehicle->[Coord]
 positions (_,_,0) = []
@@ -16,14 +26,6 @@ verify v xs
   | null [y | y<-positions v, elem y (positions (head xs))] = verify v (tail xs)
   | otherwise = False
 -- Por cada posicion de v se comprueba si coincide con alguna de x
-
--- Pregunta 1
-initialBoard :: [Vehicle] -> Board
-initialBoard [] = []
-initialBoard [x] = [x]
-initialBoard (x:xs)
-  | verify x xs = if null (initialBoard xs) then [] else x:xs
-  | otherwise = []
 
 --Pregunta 2
 isValidMove :: Board -> Int -> Int -> Bool
@@ -68,7 +70,7 @@ bfs ((current, path):queue) visited
     | elem current visited = bfs queue visited 
     | otherwise = bfs (queue ++ nextStates) (current:visited)
   where
-    nextStates = [(nextB, current:path) | nextB <- getNeighbors current, not (elem nextB visited)]
+    nextStates = [(nextBoard, current:path) | nextBoard <- getNeighbors current, not (elem nextBoard visited)]
 
 getNeighbors :: Board -> [Board]
 getNeighbors b = 
@@ -80,6 +82,4 @@ getNeighbors b =
     ]
 
 isSolved::Board->Bool
-isSolved ((o,(i,j),l):_) = j >= (6-l)
-    
-main = putStrLn $ show $  solveRushHour [(H, (2,0), 2), (V, (0,3), 3)]
+isSolved ((_,(_,j),l):_) = j >= (6-l)
